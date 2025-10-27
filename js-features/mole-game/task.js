@@ -1,49 +1,38 @@
 let dead = 0,
-  lost = 0,
-  maxScore = 10,
-  maxLosses = 5;
+  lost = 0;
 
 const deadEl = document.getElementById("dead");
 const lostEl = document.getElementById("lost");
 
 const resetStats = () => {
-  (dead = 0), (lost = 0), (deadEl.textContent = dead);
-  lostEl.textContent = lost;
+  location.reload();
 };
 
 const holes = document.querySelectorAll(".hole");
 holes.forEach((hole) => {
   hole.addEventListener("click", function () {
-    const hasMole = hole.classList.contains("hole_has-mole");
-
-    if (hasMole) {
+    if (this.classList.contains("hole_has-mole")) {
       dead++;
       deadEl.textContent = dead;
 
       hole.classList.remove("hole_has-mole");
 
-      if (dead >= maxScore) {
-        alert("Победа!");
-        endGame();
+      if (dead === 10) {
+        endGame("Победа!");
         return;
       }
     } else {
       lost++;
       lostEl.textContent = lost;
 
-      if (lost >= maxLosses) {
-        alert("Поражение!");
-        endGame();
+      if (lost === 5) {
+        endGame("Поражение!");
         return;
       }
     }
   });
 });
 
-const endGame = () => {
-  playing = false;
-
-  setTimeout(() => {
-    resetStats();
-  }, 0);
+const endGame = (message) => {
+  alert(message);
 };
