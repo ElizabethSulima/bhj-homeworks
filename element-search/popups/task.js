@@ -1,5 +1,5 @@
 (function () {
-  const modals = Array.from(document.querySelectorAll(".modal"));
+  const modals = [...document.querySelectorAll(".modal")];
 
   function showModal(modal) {
     modal.classList.add("modal_active");
