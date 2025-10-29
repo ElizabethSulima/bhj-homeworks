@@ -9,8 +9,8 @@ function initSlider(sliderRoot) {
   const dots = Array.from(dotsContainer.querySelectorAll(".slider__dot"));
 
   function updateDotsActive(index) {
-    dots.forEach((dot, i) => {
-      if (i === index) {
+    dots.forEach((dot, idx) => {
+      if (idx === index) {
         dot.classList.add("slider__dot_active");
       } else {
         dot.classList.remove("slider__dot_active");
@@ -39,10 +39,8 @@ function initSlider(sliderRoot) {
     updateDotsActive(idx);
   }
 
-  dotsContainer.addEventListener("click", function (e) {
-    const dot = e.target.closest(".slider__dot");
-    if (!dot) return;
-
+  dotsContainer.addEventListener("click", function (event) {
+    const dot = event.target.closest(".slider__dot");
     const index = dots.indexOf(dot);
     if (index >= 0) {
       showIndex(index);
