@@ -1,12 +1,14 @@
 function initSlider(sliderRoot) {
-  const items = Array.from(sliderRoot.querySelectorAll(".slider__item"));
+  const items = [...sliderRoot.querySelectorAll(".slider__item")];
   const hasActive = items.some((item) =>
     item.classList.contains("slider__item_active")
   );
-  if (!hasActive) items[0].classList.add("slider__item_active");
+  if (!hasActive) {
+    items[0].classList.add("slider__item_active");
+  }
 
   const dotsContainer = document.querySelector(".slider__dots");
-  const dots = Array.from(dotsContainer.querySelectorAll(".slider__dot"));
+  const dots = [...dotsContainer.querySelectorAll(".slider__dot")];
 
   function updateDotsActive(index) {
     dots.forEach((dot, idx) => {
@@ -30,8 +32,12 @@ function initSlider(sliderRoot) {
     const count = state.items.length;
 
     let idx = index;
-    if (idx < 0) idx = count + idx;
-    if (idx >= count) idx = idx % count;
+    if (idx < 0) {
+      idx = count + idx;
+    }
+    if (idx >= count) {
+      idx = idx % count;
+    }
 
     state.items[state.currentIndex].classList.remove("slider__item_active");
     state.items[idx].classList.add("slider__item_active");
