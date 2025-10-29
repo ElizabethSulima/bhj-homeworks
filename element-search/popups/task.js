@@ -2,17 +2,15 @@
   const modals = Array.from(document.querySelectorAll(".modal"));
 
   function showModal(modal) {
-    if (!modal) return;
     modal.classList.add("modal_active");
   }
 
   function hideModal(modal) {
-    if (!modal) return;
     modal.classList.remove("modal_active");
   }
 
   function getActiveModal() {
-    return modals.find((m) => m.classList.contains("modal_active")) || null;
+    return modals.find((m) => m.classList.contains("modal_active"));
   }
 
   const modalMain = document.querySelector("#modal_main");
@@ -20,8 +18,8 @@
     showModal(modalMain);
   }
 
-  document.addEventListener("click", function (e) {
-    const target = e.target;
+  document.addEventListener("click", function (event) {
+    const target = event.target;
 
     if (target.classList.contains("modal__close")) {
       const active = getActiveModal();
@@ -29,13 +27,10 @@
         hideModal(active);
       }
     }
-
     if (target.classList.contains("show-success")) {
       const modalSuccess = document.querySelector("#modal_success");
-
       const active = getActiveModal();
       if (active) hideModal(active);
-
       showModal(modalSuccess);
     }
   });
