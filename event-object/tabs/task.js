@@ -2,11 +2,7 @@ function tabNavigations() {
   const tabNavigations = document.querySelectorAll(".tab__navigation");
 
   tabNavigations.forEach((nav) => {
-    const contents =
-      nav.nextElementSibling &&
-      nav.nextElementSibling.classList.contains("tab__contents")
-        ? nav.nextElementSibling
-        : null;
+    const contents = nav.nextElementSibling;
 
     let tabContentGroup = contents;
     if (!tabContentGroup) {
@@ -16,16 +12,16 @@ function tabNavigations() {
 
     const tabs = [...nav.querySelectorAll(".tab")];
 
-    const contentsItems = tabContentGroup
-      ? [...tabContentGroup.querySelectorAll(".tab__content")]
-      : [];
+    const contentsItems = [
+      ...tabContentGroup.querySelectorAll(".tab__content"),
+    ];
 
     tabs.forEach((tab, index) => {
       tab.addEventListener("click", () => {
         const activeTab = nav.querySelector(".tab_active");
-        const activeContent = tabContentGroup
-          ? tabContentGroup.querySelector(".tab__content_active")
-          : null;
+        const activeContent = tabContentGroup.querySelector(
+          ".tab__content_active"
+        );
 
         if (activeTab) {
           activeTab.classList.remove("tab_active");
