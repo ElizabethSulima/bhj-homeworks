@@ -4,26 +4,24 @@ class Game {
     this.wordElement = container.querySelector(".word");
     this.winsElement = container.querySelector(".status__wins");
     this.lossElement = container.querySelector(".status__loss");
-    this.timerLeftElement = container.querySelector(".timeLeft");
+    this.timerLeftElement = container.querySelector("#timeLeft");
+    this.intervalId = null;
 
     this.reset();
     this.registerEvents();
-
-    const N = this.wordElement.length || 1;
-    let timeLimit = N;
-    let timerInterval = null;
   }
 
   reset() {
     this.setNewWord();
     this.winsElement.textContent = 0;
     this.lossElement.textContent = 0;
+    clearInterval(this.intervalId);
+    this.startTimer();
+    this.timer();
   }
 
   registerEvents() {
     document.addEventListener("keyup", (event) => {
-      const charEl = event.key.length === 1 ? event.key : "";
-
       if (event.key.length !== 1) {
         return;
       }
@@ -51,7 +49,7 @@ class Game {
 
     if (++this.winsElement.textContent === 10) {
       alert("Победа!");
-      this.reset();
+      this.startTimer();
     }
     this.setNewWord();
   }
@@ -59,13 +57,14 @@ class Game {
   fail() {
     if (++this.lossElement.textContent === 5) {
       alert("Вы проиграли!");
-      this.reset();
+      this.startTimer();
     }
     this.setNewWord();
   }
 
   setNewWord() {
     const word = this.getWord();
+    this.timerLeftElement.textContent = word.length;
 
     this.renderWord(word);
   }
@@ -97,30 +96,20 @@ class Game {
       )
       .join("");
     this.wordElement.innerHTML = html;
-
     this.currentSymbol = this.wordElement.querySelector(".symbol_current");
   }
 
-  updateTimeDisplay() {
-    this.timerLeftElement.textContent = timeLimit;
-
-    if (timeLimit <= 0) {
-    }
-  }
-
   startTimer() {
-    if (timerInterval) return;
-    timerInterval = setInterval(() => {
-      timeLimit = Math.max(0, timeLimit - 1);
-      updateTimeDisplay();
-    }, 1000);
+    const timerLeft = this.timerLeftElement.textContent;
+    setTimeout(() => {
+      this.reset();
+    }, timerLeft * 1000);
   }
 
-  stopTimer() {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-    }
+  timer() {
+    this.intervalId = setInterval(() => {
+      this.timerLeftElement.textContent--;
+    }, 1000);
   }
 }
 
