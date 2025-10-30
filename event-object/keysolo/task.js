@@ -15,9 +15,6 @@ class Game {
     this.setNewWord();
     this.winsElement.textContent = 0;
     this.lossElement.textContent = 0;
-    clearInterval(this.intervalId);
-    this.startTimer();
-    this.timer();
   }
 
   registerEvents() {
@@ -67,6 +64,8 @@ class Game {
     this.timerLeftElement.textContent = word.length;
 
     this.renderWord(word);
+    clearInterval(this.intervalId);
+    this.timer();
   }
 
   getWord() {
@@ -99,16 +98,10 @@ class Game {
     this.currentSymbol = this.wordElement.querySelector(".symbol_current");
   }
 
-  startTimer() {
-    const timerLeft = this.timerLeftElement.textContent;
-    setTimeout(() => {
-      this.reset();
-    }, timerLeft * 1000);
-  }
-
   timer() {
     this.intervalId = setInterval(() => {
       this.timerLeftElement.textContent--;
+      if (this.timerLeftElement.textContent <= 0) this.fail();
     }, 1000);
   }
 }
