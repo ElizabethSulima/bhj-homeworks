@@ -1,40 +1,32 @@
 function tabNavigations() {
-  const tabNavigations = document.querySelectorAll(".tab__navigation");
+  const tabs = document.querySelectorAll(".tab__navigation .tab");
+  const contents = document.querySelectorAll(".tab__contents .tab__content");
 
-  tabNavigations.forEach((nav) => {
-    const contents = nav.nextElementSibling;
+  const tabIndices = [...tabs];
+  const contentIndices = [...contents];
 
-    let tabContentGroup = contents;
-    if (!tabContentGroup) {
-      const root = nav.closest(".tab__container") || document.body;
-      tabContentGroup = root.querySelector(".tab__contents");
+  function activateTabByIndex(index) {
+    tabs.forEach((t) => t.classList.remove("tab_active"));
+    contents.forEach((c) => c.classList.remove("tab__content_active"));
+
+    if (typeof index === "number") {
+      if (tabs[index]) tabs[index].classList.add("tab_active");
+      if (contents[index]) contents[index].classList.add("tab__content_active");
     }
+  }
 
-    const tabs = [...nav.querySelectorAll(".tab")];
+  activateTabByIndex(0);
 
-    const contentsItems = [
-      ...tabContentGroup.querySelectorAll(".tab__content"),
-    ];
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => {
+      const idx = tabIndices[i];
+      const contIdx = contentIndices[i];
 
-    tabs.forEach((tab, index) => {
-      tab.addEventListener("click", () => {
-        const activeTab = nav.querySelector(".tab_active");
-        const activeContent = tabContentGroup.querySelector(
-          ".tab__content_active"
-        );
-
-        if (activeTab) {
-          activeTab.classList.remove("tab_active");
-        }
-        if (activeContent) {
-          activeContent.classList.remove("tab__content_active");
-        }
-
-        tab.classList.add("tab_active");
-        if (contentsItems[index]) {
-          contentsItems[index].classList.add("tab__content_active");
-        }
-      });
+      if (idx === contIdx) {
+        activateTabByIndex(idx);
+      } else {
+        activateTabByIndex(i);
+      }
     });
   });
 }
