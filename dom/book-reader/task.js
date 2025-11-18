@@ -1,14 +1,12 @@
 function book() {
   const controlContainer = document.querySelector(".book__control_font-size");
   const bookElement = document.querySelector(".book");
-
+  const sizeButtons = [...controlContainer.querySelectorAll(".font-size")];
   const sizeClasses = {
     small: "book_fs-small",
     normal: "",
     big: "book_fs-big",
   };
-
-  const sizeButtons = [...controlContainer.querySelectorAll(".font-size")];
 
   function applySize(sizeKey, buttonEl) {
     sizeButtons.forEach((btn) => btn.classList.remove("font-size_active"));

@@ -1,21 +1,32 @@
-function ads() {
-  const rotators = document.querySelectorAll(".rotator");
+class Rotator {
+  constructor(component) {
+    this.component = component.querySelector(".rotator");
+    this.cases = [...this.component.querySelectorAll(".rotator__case")];
+    this.speed = this.cases[0].dataset.speed;
+    this.cases[0].style.color = this.cases[0].dataset.color;
+  }
 
-  rotators.forEach((rotator) => {
-    const cases = [...rotator.querySelectorAll(".rotator__case")];
+  switchTo() {
+    const callback = () => {
+      let activeIndex = this.cases.findIndex((caseIdx) =>
+        caseIdx.classList.contains("rotator__case_active")
+      );
 
-    let activeIndex = cases.findIndex((c) =>
-      c.classList.contains("rotator__case_active")
-    );
+      this.speed = this.cases[activeIndex].dataset.speed;
 
-    const next = () => {
-      cases[activeIndex].classList.remove("rotator__case_active");
-      activeIndex = (activeIndex + 1) % cases.length;
-      cases[activeIndex].classList.add("rotator__case_active");
+      this.cases[activeIndex].classList.remove("rotator__case_active");
+      activeIndex = (activeIndex + 1) % this.cases.length;
+      this.cases[activeIndex].classList.add("rotator__case_active");
+
+      this.cases[activeIndex].style.color =
+        this.cases[activeIndex].dataset.color;
+
+      setTimeout(callback, this.speed);
     };
 
-    setInterval(next, 1000);
-  });
+    setTimeout(callback, this.speed);
+  }
 }
 
-ads();
+const cards = document.querySelectorAll(".card");
+cards.forEach((card) => new Rotator(card).switchTo());
