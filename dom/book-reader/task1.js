@@ -3,8 +3,14 @@ class BookReader {
     this.component = component;
     this.controlSize = this.component.querySelector(".book__control_font-size");
     this.sizeButtons = [...this.controlSize.querySelectorAll(".font-size")];
+
     this.controlColor = this.component.querySelector(".book__control_color");
     this.colorButtons = [...this.controlColor.querySelectorAll(".color")];
+
+    this.controlBackground = this.component.querySelector(
+      ".book__control_background"
+    );
+    this.backColorButtons = this.controlBackground.querySelectorAll(".color");
     this.bindHandlers();
   }
 
@@ -19,6 +25,35 @@ class BookReader {
     this.component.classList.add(`font-size_${size}`);
   }
 
+  applyColor(color, buttonEl) {
+    this.colorButtons.forEach((button) =>
+      button.classList.remove("color_active")
+    );
+    if (buttonEl) {
+      buttonEl.classList.add("color_active");
+    }
+    this.component.classList.remove(
+      "book_color-gray",
+      "book_color-whitesmoke",
+      "book_color-black"
+    );
+    this.component.classList.add(`book_color-${color}`);
+  }
+
+  applyBackColor(color, buttonEl) {
+    this.backColorButtons.forEach((button) =>
+      button.classList.remove("color_active")
+    );
+    if (buttonEl) {
+      buttonEl.classList.add("color_active");
+    }
+    this.component.classList.remove(
+      "book_bg-gray",
+      "book_bg-white",
+      "book_bg-black"
+    );
+    this.component.classList.add(`book_bg-${color}`);
+  }
 
   bindHandlers() {
     this.sizeButtons.forEach((button) => {
@@ -27,54 +62,18 @@ class BookReader {
         this.applySize(button.dataset.size, button);
       });
     });
-  }
 
-  initColorControls() {
-    // Контролы цвета текста
-    const textColorControls = document.querySelectorAll(
-      ".book__control_color .text_color_black, \
-       .book__control_color .text_color_gray, \
-       .book__control_color .text_color_whitesmoke"
-    );
-
-    textColorControls.forEach((control) => {
-      control.addEventListener("click", (event) => {
+    this.colorButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
         event.preventDefault();
-        const color = control.getAttribute("data-text-color");
-        // Удаляем старый цвет текста
-        this.bookEl.classList.remove(
-          "book_color-black",
-          "book_color-gray",
-          "book_color-whitesmoke"
-        );
-        // Применяем новый цвет
-        this.bookEl.classList.add(`book_color-${color}`);
-        // Активируем текущий элемент
-        this._setActiveControl(control, ".book__control_color .color");
+        this.applyColor(button.getAttribute("data-text-color"), button);
       });
     });
 
-    // Контролы цвета фона
-    const bgColorControls = document.querySelectorAll(
-      ".book__control_background .bg_color_black, \
-       .book__control_background .bg_color_gray, \
-       .book__control_background .bg_color_white"
-    );
-
-    bgColorControls.forEach((control) => {
-      control.addEventListener("click", (e) => {
-        e.preventDefault();
-        const color = control.getAttribute("data-bg-color");
-        // Удаляем старый фон
-        this.bookEl.classList.remove(
-          "book_bg-black",
-          "book_bg-gray",
-          "book_bg-white"
-        );
-        // Применяем новый фон
-        this.bookEl.classList.add(`book_bg-${color}`);
-        // Активируем текущий элемент
-        this._setActiveControl(control, ".book__control_background .color");
+    this.backColorButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        this.applyBackColor(button.getAttribute("data-bg-color"), button);
       });
     });
   }
