@@ -2,7 +2,7 @@ class ChatBot {
   constructor(component) {
     this.component = component;
     this.inputMessage = this.component.querySelector(".chat-widget__input");
-    this.messages = this.component.querySelector(".chat-widget__messages");
+    this.messages = [];
     this.botMessage = [
       "Где Ваша совесть?",
       "Вы не купили ни одного товара, чтобы с нами так разговаривать",
@@ -10,19 +10,51 @@ class ChatBot {
       "Добрый день.  До свидания!",
       "К сожалению все операторы в данный момент заняты. Не пишите нам больше!",
     ];
-    this.currentTime = this.getCurrentTime;
   }
 
   getCurrentTime() {
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, "0");
-    const mm = String(now.getMinutes()).padStart(2, "0");
-    return `${hh}:${mm}`;
+    return new Date().toLocaleString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   }
 
-  submitMessageUser() {}
+  addUserMessage(text) {
+    const message = this.component.querySelector(".chat-widget__messages");
+    const chatMess = this.component.querySelector(".message");
+    message.innerHTML += `
+      <div class="message message_client">
+        <div class="message__time">${this.getCurrentTime()}</div>
+          <div class="message__text">
+          ${text}
+          </div>
+      </div>`;
+    chatMess.scrollTop = chatMess.scrollHeight;
+  }
 
-  submitMessageBot() {}
+  addBotMessage() {
+    const message = this.component.querySelector(".chat-widget__messages");
+    const randomIndex = Math.floor(Math.random() * this.botMessage.length);
+    message.innerHTML += `
+      <div class="message">
+        <div class="message__time">${this.getCurrentTime()}</div>
+          <div class="message__text">
+          ${this.botMessage[randomIndex]}
+          </div>
+      </div>`;
+    message.scrollTop = message.scrollHeight;
+  }
+
+  enterMessage() {
+    this.inputMessage.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.addUserMessage(this.inputMessage.value);
+        this.inputMessage.value = "";
+        this.addBotMessage();
+      }
+    });
+  }
 
   openChat() {
     this.component.addEventListener("click", (event) => {
@@ -35,3 +67,4 @@ class ChatBot {
 
 const chat = new ChatBot(document.querySelector(".chat-widget"));
 chat.openChat();
+chat.enterMessage();

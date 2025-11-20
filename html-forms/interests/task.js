@@ -1,10 +1,10 @@
-class Card {
+class InterestsManager {
   constructor(component) {
-    this.component = component.querySelector(".interests");
+    this.component = component;
     this.interestsCheck = [
       ...this.component.querySelectorAll(".interest__check"),
     ];
   }
 }
 
-const card = new Card(document.querySelector(".card"));
+const manager = new InterestsManager(document.querySelector(".interests"));
