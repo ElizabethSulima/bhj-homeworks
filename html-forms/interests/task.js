@@ -4,6 +4,7 @@ class InterestsManager {
     this.interestsCheck = [
       ...this.component.querySelectorAll(".interest__check"),
     ];
+
   }
 }
 

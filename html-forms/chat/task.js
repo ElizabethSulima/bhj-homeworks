@@ -21,7 +21,6 @@ class ChatBot {
 
   addUserMessage(text) {
     const message = this.component.querySelector(".chat-widget__messages");
-    const chatMess = this.component.querySelector(".message");
     message.innerHTML += `
       <div class="message message_client">
         <div class="message__time">${this.getCurrentTime()}</div>
@@ -29,7 +28,10 @@ class ChatBot {
           ${text}
           </div>
       </div>`;
-    chatMess.scrollTop = chatMess.scrollHeight;
+    const area = this.component.querySelector(
+      ".chat-widget__messages-container"
+    );
+    area.scrollTop = area.scrollHeight;
   }
 
   addBotMessage() {
@@ -42,7 +44,10 @@ class ChatBot {
           ${this.botMessage[randomIndex]}
           </div>
       </div>`;
-    message.scrollTop = message.scrollHeight;
+    const area = this.component.querySelector(
+      ".chat-widget__messages-container"
+    );
+    area.scrollTop = area.scrollHeight;
   }
 
   enterMessage() {
