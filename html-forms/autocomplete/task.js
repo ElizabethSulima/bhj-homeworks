@@ -6,6 +6,7 @@ class Autocomplete {
     this.list = container.querySelector(".autocomplete__list");
     this.valueContainer = container.querySelector(".autocomplete__value");
     this.valueElement = container.querySelector(".autocomplete__text-content");
+    this.options = [...this.input.options];
 
     this.registerEvents();
   }
@@ -69,20 +70,11 @@ class Autocomplete {
   }
 
   getMatches(text) {
-    let results = [];
-    const lowerQuery = text.toLowerCase();
-    const options = [...this.input.options];
+    const testLower = text.toLowerCase();
 
-    options.forEach((option) => {
-      if (option.text.toLowerCase().includes(lowerQuery)) {
-        results.push({
-          text: option.text,
-          value: option.value,
-        });
-      }
-    });
-
-    return results;
+    return this.options.filter((option) =>
+      option.text.toLowerCase().includes(testLower)
+    );
   }
 }
 

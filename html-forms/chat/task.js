@@ -10,6 +10,9 @@ class ChatBot {
       "Добрый день.  До свидания!",
       "К сожалению все операторы в данный момент заняты. Не пишите нам больше!",
     ];
+    this.message_container = this.component.querySelector(
+      ".chat-widget__messages-container"
+    );
   }
 
   getCurrentTime() {
@@ -20,34 +23,26 @@ class ChatBot {
   }
 
   addUserMessage(text) {
-    const message = this.component.querySelector(".chat-widget__messages");
-    message.innerHTML += `
+    this.message_container.innerHTML += `
       <div class="message message_client">
         <div class="message__time">${this.getCurrentTime()}</div>
           <div class="message__text">
           ${text}
           </div>
       </div>`;
-    const area = this.component.querySelector(
-      ".chat-widget__messages-container"
-    );
-    area.scrollTop = area.scrollHeight;
+    this.message_container.scrollTop = this.message_container.scrollHeight;
   }
 
   addBotMessage() {
-    const message = this.component.querySelector(".chat-widget__messages");
     const randomIndex = Math.floor(Math.random() * this.botMessage.length);
-    message.innerHTML += `
+    this.message_container.innerHTML += `
       <div class="message">
         <div class="message__time">${this.getCurrentTime()}</div>
           <div class="message__text">
           ${this.botMessage[randomIndex]}
           </div>
       </div>`;
-    const area = this.component.querySelector(
-      ".chat-widget__messages-container"
-    );
-    area.scrollTop = area.scrollHeight;
+    this.message_container.scrollTop = this.message_container.scrollHeight;
   }
 
   enterMessage() {

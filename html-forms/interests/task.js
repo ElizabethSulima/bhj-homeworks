@@ -1,22 +1,20 @@
-function InterestBox() {
-  const parentCheckbox = document.querySelector(".interest__check");
+const interests = document.querySelectorAll(".interest");
 
-  function setChildCheckboxesState(root, checked) {
-    const childCheckboxes = root.querySelectorAll(
-      'ul.interests input[type="checkbox"]'
-    );
-    childCheckboxes.forEach((box) => {
-      box.checked = checked;
+class Interest {
+  constructor(component) {
+    this.component = component;
+    this.input = this.component.querySelector(".interest__check");
+    this.init();
+  }
+  init() {
+    this.input.addEventListener("change", () => {
+      [...this.component.querySelectorAll(".interest__check")]
+        .filter((el) => el !== this.input)
+        .forEach((element) => {
+          element.checked = this.input.checked;
+        });
     });
   }
-
-  parentCheckbox.addEventListener("change", function () {
-    const nestedList =
-      this.closest("li.interest").querySelector("ul.interests");
-    if (nestedList) {
-      setChildCheckboxesState(nestedList, this.checked);
-    }
-  });
 }
 
-InterestBox();
+interests.forEach((interest) => new Interest(interest));
