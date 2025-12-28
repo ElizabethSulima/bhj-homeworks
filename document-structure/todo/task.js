@@ -7,8 +7,11 @@ class PlainManager {
     this.form = this.component.querySelector(".tasks__control");
     this.storageKey = "tasks__list";
 
-    this.loadFromStorage();
     this.addTask();
+
+    if (localStorage.getItem(this.storageKey)) {
+      this.loadFromStorage();
+    }
   }
 
   taskListInsert(inputValue) {
@@ -20,7 +23,6 @@ class PlainManager {
     task.querySelector(".task__remove").addEventListener("click", (event) => {
       event.preventDefault();
       task.remove();
-      this.updateStorage();
     });
 
     this.container.appendChild(task);
@@ -40,7 +42,6 @@ class PlainManager {
     const tasks = JSON.parse(raw);
 
     tasks.forEach((tsk) => this.taskListInsert(tsk));
-    this.updateStorage();
   }
 
   addTask() {
