@@ -4,31 +4,51 @@ class PlainManager {
     this.input = this.component.querySelector(".tasks__input");
     this.buttonAdd = this.component.querySelector(".tasks__add");
     this.container = this.component.querySelector(".tasks__list");
-    this.remove = this.component.querySelector(".task__remove");
     this.form = this.component.querySelector(".tasks__control");
+    this.storageKey = "tasks__list";
 
+    this.loadFromStorage();
     this.addTask();
   }
 
   taskListInsert(inputValue) {
-    this.container.innerHTML += `<div class="task">
-                 <div class="task__title">${inputValue}</div>
-                 <a href="#" class="task__remove">&times;</a>
-              </div>`;
+    const task = document.createElement("div");
+    task.classList.add("task");
+    task.innerHTML = `<div class="task__title">${inputValue}</div>
+    <a href="#" class="task__remove">&times;</a>`;
+
+    task.querySelector(".task__remove").addEventListener("click", (event) => {
+      event.preventDefault();
+      task.remove();
+      this.updateStorage();
+    });
+
+    this.container.appendChild(task);
+  }
+
+  updateStorage() {
+    const tasks = [];
+    const taskElements = this.container.querySelectorAll(".task__title");
+    taskElements.forEach((el) => {
+      tasks.push(el.textContent);
+    });
+    localStorage.setItem(this.storageKey, JSON.stringify(tasks));
+  }
+
+  loadFromStorage() {
+    const raw = localStorage.getItem(this.storageKey);
+    const tasks = JSON.parse(raw);
+
+    tasks.forEach((tsk) => this.taskListInsert(tsk));
+    this.updateStorage();
   }
 
   addTask() {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
       this.taskListInsert(this.input.value.trim());
-    });
-  }
-
-  removeTask() {
-    this.remove.addEventListener("click", (event) => {
-      event.preventDefault();
-      const task = this.remove.closest(".task");
-      if (task) task.remove();
+      this.updateStorage();
+      this.form.reset();
     });
   }
 }
